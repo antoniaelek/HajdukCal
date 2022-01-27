@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HajdukCal", "HajdukCal\HajdukCal.csproj", "{3575516A-51D2-4626-9677-3962AB205CD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HajdukCal.Console", "HajdukCal.Console\HajdukCal.Console.csproj", "{079AC54E-B222-49C1-9579-82008F26A886}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3575516A-51D2-4626-9677-3962AB205CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3575516A-51D2-4626-9677-3962AB205CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3575516A-51D2-4626-9677-3962AB205CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3575516A-51D2-4626-9677-3962AB205CD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{079AC54E-B222-49C1-9579-82008F26A886}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{079AC54E-B222-49C1-9579-82008F26A886}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{079AC54E-B222-49C1-9579-82008F26A886}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{079AC54E-B222-49C1-9579-82008F26A886}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
