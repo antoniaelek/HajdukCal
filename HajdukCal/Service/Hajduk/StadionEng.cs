@@ -1,3 +1,3 @@
-﻿namespace HajdukCal.Service;
+﻿namespace HajdukCal.Service.Hajduk;
 
 public enum StadionEng { Away, Home };

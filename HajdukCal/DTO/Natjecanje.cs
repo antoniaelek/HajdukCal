@@ -4,5 +4,10 @@ public enum Natjecanje
 {
     Nepoznato,
     Kup,
-    Prvenstvo
+    Prvenstvo,
+    Superkup,
+    Europa,
+    Podsavez,
+    Prijateljske
+    
 }

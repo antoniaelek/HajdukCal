@@ -1,8 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using HajdukCal;
 
-using HajdukCal;
+var calendar = await CalendarGenerator.Get();
 
-var timetable = (await HajdukServiceClient.Fetch()).ToDTO();
-var serializedCalendar = CalendarGenerator.GetSerialized(timetable);
-
-File.WriteAllText(@"cal.ics", serializedCalendar);
+File.WriteAllText(@"cal.ics", calendar.Serialize());

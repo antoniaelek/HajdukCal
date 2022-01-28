@@ -1,9 +1,10 @@
 ﻿using System.Globalization;
+using HajdukCal.DTO;
 using Newtonsoft.Json;
 
-namespace HajdukCal.Service;
+namespace HajdukCal.Service.Hajduk;
 
-public class Utakmica
+public class BuducaUtakmica
 {
     [JsonProperty("id")]
     [JsonConverter(typeof(ParseStringConverter))]
@@ -43,14 +44,14 @@ public class Utakmica
     [JsonProperty("natjecanje_eng")]
     public NatjecanjeEng NatjecanjeEng { get; set; }
 
-    public DTO.Utakmica ToDTO(Misec misec)
+    public async Task<Utakmica> ToDTO(BuduciMisec buduciMisec)
     {
         DateOnly? gameDate = default;
         TimeOnly? gameTime = default;
         var datetime = DatumEng.Split('-');
         if (datetime.Length == 2)
         {
-            if (DateOnly.TryParseExact(datetime[0] + misec.GetYear(), "MMM d yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+            if (DateOnly.TryParseExact(datetime[0] + buduciMisec.GetYear(), "MMM d yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
             {
                 gameDate = date;
             }
@@ -60,14 +61,17 @@ public class Utakmica
                 gameTime = time;
             }
         }
-
-        return new DTO.Utakmica()
+        
+        var location = await ExternalServices.FetchLocation(Mjesto);
+        var mjesto = location?.ToDTO() ?? new Mjesto(){Naziv = Mjesto};
+        
+        return new Utakmica()
         {
-            Id = Id,
             Naziv = Protivnik,
             Natjecanje = Natjecanje.ToDTO(),
             Stadion = Stadion.ToDTO(),
             Opis = Opis,
+            Mjesto = mjesto,
             Datum = gameDate,
             Vrijeme = gameTime
         };

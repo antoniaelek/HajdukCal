@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 
-namespace HajdukCal.Service;
+namespace HajdukCal.Service.Hajduk;
 
-internal class NatjecanjeConverter : JsonConverter
+internal class TipUtakmiceConverter : JsonConverter
 {
-    public override bool CanConvert(Type t) => t == typeof(Natjecanje) || t == typeof(Natjecanje?);
+    public override bool CanConvert(Type t) => t == typeof(TipUtakmice) || t == typeof(TipUtakmice?);
 
     public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
     {
@@ -12,12 +12,15 @@ internal class NatjecanjeConverter : JsonConverter
         var value = serializer.Deserialize<string>(reader);
         switch (value)
         {
+            case "EUR":
+                return TipUtakmice.Eur;
             case "KUP":
-                return Natjecanje.Kup;
+                return TipUtakmice.Kup;
             case "PRV":
-                return Natjecanje.Prv;
+                return TipUtakmice.Prv;
         }
-        throw new Exception("Cannot unmarshal type Natjecanje");
+
+        throw new Exception("Cannot unmarshal type TipUtakmice");
     }
 
     public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
@@ -27,18 +30,23 @@ internal class NatjecanjeConverter : JsonConverter
             serializer.Serialize(writer, null);
             return;
         }
-        var value = (Natjecanje)untypedValue;
+
+        var value = (TipUtakmice) untypedValue;
         switch (value)
         {
-            case Natjecanje.Kup:
+            case TipUtakmice.Eur:
+                serializer.Serialize(writer, "EUR");
+                return;
+            case TipUtakmice.Kup:
                 serializer.Serialize(writer, "KUP");
                 return;
-            case Natjecanje.Prv:
+            case TipUtakmice.Prv:
                 serializer.Serialize(writer, "PRV");
                 return;
         }
-        throw new Exception("Cannot marshal type Natjecanje");
+
+        throw new Exception("Cannot marshal type TipUtakmice");
     }
 
-    public static readonly NatjecanjeConverter Singleton = new NatjecanjeConverter();
+    public static readonly TipUtakmiceConverter Singleton = new TipUtakmiceConverter();
 }

@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 
-namespace HajdukCal.Service;
+namespace HajdukCal.Service.Hajduk;
 
 public class Raspored
 {
-    [JsonProperty("miseci")] public List<Misec> Miseci { get; set; }
+    [JsonProperty("miseci")] public List<BuduciMisec> Miseci { get; set; }
 
-    public DTO.Raspored ToDTO()
+    public async Task<DTO.Raspored> ToDTO()
     {
         var utakmice = new List<DTO.Utakmica>();
         
@@ -14,7 +14,7 @@ public class Raspored
         {
             foreach (var utakmica in misec.Utakmice)
             {
-                utakmice.Add(utakmica.ToDTO(misec));
+                utakmice.Add(await utakmica.ToDTO(misec));
             }
         }
 

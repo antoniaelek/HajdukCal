@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace HajdukCal.Service;
+namespace HajdukCal.Service.Hajduk;
 
-public class Misec
+public class BuduciMisec
 {
     [JsonProperty("misec")]
     public string MisecHrv { get; set; }
@@ -11,7 +11,7 @@ public class Misec
     public string MisecEng { get; set; }
 
     [JsonProperty("utakmice")]
-    public List<Utakmica> Utakmice { get; set; }
+    public List<BuducaUtakmica> Utakmice { get; set; }
 
     public int GetYear()
     {

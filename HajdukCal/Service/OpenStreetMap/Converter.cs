@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace HajdukCal.Service;
+namespace HajdukCal.Service.OpenStreetMap;
 
 internal static class Converter
 {
@@ -12,10 +12,7 @@ internal static class Converter
         DateParseHandling = DateParseHandling.None,
         Converters =
         {
-            NatjecanjeConverter.Singleton,
-            NatjecanjeEngConverter.Singleton,
-            StadionConverter.Singleton,
-            StadionEngConverter.Singleton,
+            OsmTypeConverter.Singleton,
             new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
         },
     };

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace HajdukCal.Service;
+namespace HajdukCal.Service.Hajduk;
 
 internal class ParseStringConverter : JsonConverter
 {
@@ -15,6 +15,7 @@ internal class ParseStringConverter : JsonConverter
         {
             return l;
         }
+
         throw new Exception("Cannot unmarshal type long");
     }
 
@@ -25,7 +26,8 @@ internal class ParseStringConverter : JsonConverter
             serializer.Serialize(writer, null);
             return;
         }
-        var value = (long)untypedValue;
+
+        var value = (long) untypedValue;
         serializer.Serialize(writer, value.ToString());
         return;
     }

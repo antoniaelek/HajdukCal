@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace HajdukCal.Service;
+namespace HajdukCal.Service.Hajduk;
 
 internal class NatjecanjeEngConverter : JsonConverter
 {
