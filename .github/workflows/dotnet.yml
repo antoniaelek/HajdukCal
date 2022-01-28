@@ -1,6 +1,8 @@
 name: .NET
 
 on:
+  schedule:
+  - cron: "30 20 * * *"
   push:
     branches: [ master ]
   pull_request:
@@ -23,3 +25,22 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Run
+      run: dotnet run --project HajdukCal.Console/HajdukCal.Console.csproj
+    - name: Delete old release asset
+      uses: mknejp/delete-release-assets@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: 1.0.0
+        assets: hajduk_cal.ics
+        fail-if-no-assets: false
+    - name: Upload new release asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: https://uploads.github.com/repos/antoniaelek/HajdukCal/releases/58292780/assets{?name,label}
+        asset_path: hajduk_cal.ics
+        asset_name: hajduk_cal.ics
+        asset_content_type: application/zip
