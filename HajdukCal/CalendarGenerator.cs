@@ -31,6 +31,7 @@ public static class CalendarGenerator
     private static Calendar Get(IEnumerable<DTO.Raspored> rasporedi, string name, string desription)
     {
         var calendar = new Calendar();
+        calendar.AddTimeZone("Europe/Zagreb");
         calendar.Properties.Add(new CalendarProperty("NAME",name));
         calendar.Properties.Add(new CalendarProperty("X-WR-CALNAME",name));
         calendar.Properties.Add(new CalendarProperty("DESCRIPTION",desription));
@@ -54,8 +55,8 @@ public static class CalendarGenerator
                 {
                     Summary = $"{utakmica.Naziv} ({utakmica.Natjecanje.ToString().ToLower()}, {utakmica.Opis})",
                     Description = $"{utakmica.Natjecanje}, {utakmica.Opis}\n{utakmica.Naziv}",
-                    Start = new CalDateTime(start, "HR"),
-                    End = new CalDateTime(start.AddHours(2), "HR"),
+                    Start = new CalDateTime(start, "Europe/Zagreb"),
+                    End = new CalDateTime(start.AddHours(2), "Europe/Zagreb"),
                 };
             
                 if (utakmica.Mjesto?.Naziv != null)
