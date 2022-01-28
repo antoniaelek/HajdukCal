@@ -13,7 +13,7 @@ public static class CalendarGenerator
         return new CalendarSerializer().SerializeToString(calendar);
     }
 
-    public static async Task<Calendar> Get()
+    public static async Task<Calendar> Get(string name, string description)
     {
         var raspored = await ExternalServices.FetchNextMatches();
         var raspoerdDto = await raspored.ToDTO();
@@ -25,13 +25,16 @@ public static class CalendarGenerator
         all.AddRange(rezultatiDto);
         all.Add(raspoerdDto);
 
-        return Get(all);
+        return Get(all, name, description);
     }
     
-    private static Calendar Get(IEnumerable<DTO.Raspored> rasporedi)
+    private static Calendar Get(IEnumerable<DTO.Raspored> rasporedi, string name, string desription)
     {
         var calendar = new Calendar();
-
+        calendar.Properties.Add(new CalendarProperty("NAME",name));
+        calendar.Properties.Add(new CalendarProperty("X-WR-CALNAME",name));
+        calendar.Properties.Add(new CalendarProperty("DESCRIPTION",desription));
+        calendar.Properties.Add(new CalendarProperty("X-WR-CALDESC",desription));
         foreach (var raspored in rasporedi)
         {
             foreach (var utakmica in raspored.Utakmice)

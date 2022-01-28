@@ -1,5 +1,5 @@
 ﻿using HajdukCal;
 
-var calendar = await CalendarGenerator.Get();
+var calendar = await CalendarGenerator.Get("Hajdukov kalendar", "Kalendar utakmica Hajduk Split");
 
-File.WriteAllText(@"cal.ics", calendar.Serialize());
+File.WriteAllText(@"hajduk_calendar.ics", calendar.Serialize());
