@@ -12,6 +12,8 @@ public static class EnumConverters
                 return DTO.Natjecanje.Kup;
             case TipUtakmice.Prv:
                 return DTO.Natjecanje.Prvenstvo;
+            case TipUtakmice.Spk:
+                return DTO.Natjecanje.Superkup;
             default:
                 return DTO.Natjecanje.Nepoznato;
         }
@@ -27,6 +29,8 @@ public static class EnumConverters
                 return DTO.Natjecanje.Kup;
             case Natjecanje.Prv:
                 return DTO.Natjecanje.Prvenstvo;
+            case Natjecanje.Spk:
+                return DTO.Natjecanje.Superkup;
             default:
                 return DTO.Natjecanje.Nepoznato;
         }
