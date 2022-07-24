@@ -18,6 +18,8 @@ internal class TipUtakmiceConverter : JsonConverter
                 return TipUtakmice.Kup;
             case "PRV":
                 return TipUtakmice.Prv;
+            case "SPK":
+                return TipUtakmice.Spk;
         }
 
         throw new Exception("Cannot unmarshal type TipUtakmice");
@@ -42,6 +44,9 @@ internal class TipUtakmiceConverter : JsonConverter
                 return;
             case TipUtakmice.Prv:
                 serializer.Serialize(writer, "PRV");
+                return;
+            case TipUtakmice.Spk:
+                serializer.Serialize(writer, "SPK");
                 return;
         }
 

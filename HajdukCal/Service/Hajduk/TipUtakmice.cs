@@ -4,5 +4,6 @@ public enum TipUtakmice
 {
     Eur,
     Kup,
-    Prv
+    Prv,
+    Spk
 };

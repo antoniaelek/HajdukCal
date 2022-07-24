@@ -18,6 +18,8 @@ internal class TipUtakmiceEngConverter : JsonConverter
                 return TipUtakmiceEng.Eur;
             case "LGE":
                 return TipUtakmiceEng.Lge;
+            case "SC":
+                return TipUtakmiceEng.Sc;
         }
 
         throw new Exception("Cannot unmarshal type TipUtakmiceEng");
@@ -42,6 +44,9 @@ internal class TipUtakmiceEngConverter : JsonConverter
                 return;
             case TipUtakmiceEng.Lge:
                 serializer.Serialize(writer, "LGE");
+                return;
+            case TipUtakmiceEng.Sc:
+                serializer.Serialize(writer, "SC");
                 return;
         }
 
