@@ -2,11 +2,10 @@ name: .NET
 
 on:
   schedule:
-  - cron: "30 20 * * *"
+    - cron: "30 00 * * *"
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - 'master'
 
 jobs:
   build:
