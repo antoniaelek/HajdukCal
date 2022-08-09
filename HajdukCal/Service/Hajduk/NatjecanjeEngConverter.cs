@@ -16,8 +16,11 @@ internal class NatjecanjeEngConverter : JsonConverter
                 return NatjecanjeEng.Cha;
             case "CUP":
                 return NatjecanjeEng.Cup;
+            case "EUR":
+                return NatjecanjeEng.Eur;
+            default:
+                return NatjecanjeEng.Unk;
         }
-        throw new Exception("Cannot unmarshal type NatjecanjeEng");
     }
 
     public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
@@ -36,8 +39,13 @@ internal class NatjecanjeEngConverter : JsonConverter
             case NatjecanjeEng.Cup:
                 serializer.Serialize(writer, "CUP");
                 return;
+            case NatjecanjeEng.Eur:
+                serializer.Serialize(writer, "EUR");
+                return;
+            default:
+                serializer.Serialize(writer, "UNK");
+                return;
         }
-        throw new Exception("Cannot marshal type NatjecanjeEng");
     }
 
     public static readonly NatjecanjeEngConverter Singleton = new NatjecanjeEngConverter();

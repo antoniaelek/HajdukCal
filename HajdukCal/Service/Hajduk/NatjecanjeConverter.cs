@@ -12,12 +12,17 @@ internal class NatjecanjeConverter : JsonConverter
         var value = serializer.Deserialize<string>(reader);
         switch (value)
         {
+            case "EUR":
+                return DTO.Natjecanje.Europa;
             case "KUP":
                 return Natjecanje.Kup;
             case "PRV":
                 return Natjecanje.Prv;
+            case "SPK":
+                return Natjecanje.Spk;
+            default:
+                return DTO.Natjecanje.Nepoznato;
         }
-        throw new Exception("Cannot unmarshal type Natjecanje");
     }
 
     public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
@@ -36,8 +41,16 @@ internal class NatjecanjeConverter : JsonConverter
             case Natjecanje.Prv:
                 serializer.Serialize(writer, "PRV");
                 return;
+            case Natjecanje.Spk:
+                serializer.Serialize(writer, "SPK");
+                return;
+            case Natjecanje.Eur:
+                serializer.Serialize(writer, "EUR");
+                return;
+            default:
+                serializer.Serialize(writer, "NEP");
+                return;
         }
-        throw new Exception("Cannot marshal type Natjecanje");
     }
 
     public static readonly NatjecanjeConverter Singleton = new NatjecanjeConverter();

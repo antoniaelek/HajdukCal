@@ -1,3 +1,3 @@
 ﻿namespace HajdukCal.Service.Hajduk;
 
-public enum NatjecanjeEng { Cha, Cup };
+public enum NatjecanjeEng { Unk, Cha, Cup, Eur };
