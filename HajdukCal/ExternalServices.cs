@@ -18,8 +18,15 @@ public static class ExternalServices
     
     public static async Task<Location?> FetchLocation(string location)
     {
-        var json = await client.GetStringAsync($"https://nominatim.openstreetmap.org/search.php?q={HttpUtility.UrlEncode(location)}&format=jsonv2");
-        return Location.FromJson(json)?.FirstOrDefault() ?? default;
+        try
+        {
+            var json = await client.GetStringAsync($"https://nominatim.openstreetmap.org/search.php?q={HttpUtility.UrlEncode(location)}&format=jsonv2");
+            return Location.FromJson(json)?.FirstOrDefault() ?? default;
+        }
+        catch (Exception)
+        {
+            return default;
+        }
     }
 
     public static async Task<Raspored> FetchNextMatches()
