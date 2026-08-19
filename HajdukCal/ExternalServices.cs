@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Web;
+﻿using System.Web;
 using HajdukCal.Service;
 using HajdukCal.Service.Hajduk;
 using HajdukCal.Service.OpenStreetMap;
@@ -11,6 +10,8 @@ public static class ExternalServices
 {
     private const string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0";
 
+    private static readonly string? ScraperApiKey = Environment.GetEnvironmentVariable("SCRAPERAPI_KEY");
+
     private static HttpClient client;
 
     static ExternalServices()
@@ -21,11 +22,13 @@ public static class ExternalServices
         client.DefaultRequestHeaders.Add("Accept-Language","hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7");
     }
 
-    // hajduk.hr sits behind Cloudflare, which sometimes serves a JS challenge to
-    // System.Net.Http.HttpClient specifically (its TLS/HTTP fingerprint gets flagged)
-    // even though an identical request via curl passes straight through with 200.
-    // Retry a couple of times first (in case it's transient), then fall back to
-    // shelling out to curl, which reliably isn't challenged.
+    // hajduk.hr sits behind Cloudflare, which blocks/challenges requests from
+    // datacenter IP ranges (including GitHub Actions runners) regardless of client
+    // (HttpClient and curl both get 403 from CI, even though both work fine from
+    // a residential/dev network). A couple of direct retries handle transient
+    // hiccups; if those still fail, route the request through ScraperAPI (a proxy
+    // service with clean IPs) so CI keeps working. Requires SCRAPERAPI_KEY to be
+    // set - if it isn't, the direct failure is rethrown as before.
     private static async Task<string> GetStringWithRetryAsync(string url, int maxAttempts = 2)
     {
         Exception? lastError = null;
@@ -42,9 +45,14 @@ public static class ExternalServices
             }
         }
 
+        if (string.IsNullOrEmpty(ScraperApiKey))
+        {
+            throw lastError!;
+        }
+
         try
         {
-            return await FetchWithCurlAsync(url);
+            return await FetchWithScraperApiAsync(url);
         }
         catch (Exception)
         {
@@ -52,32 +60,10 @@ public static class ExternalServices
         }
     }
 
-    private static async Task<string> FetchWithCurlAsync(string url)
+    private static async Task<string> FetchWithScraperApiAsync(string url)
     {
-        var psi = new ProcessStartInfo
-        {
-            FileName = "curl",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-        };
-        psi.ArgumentList.Add("-sS");
-        psi.ArgumentList.Add("-f");
-        psi.ArgumentList.Add("-A");
-        psi.ArgumentList.Add(UserAgent);
-        psi.ArgumentList.Add(url);
-
-        using var process = Process.Start(psi) ?? throw new InvalidOperationException("Failed to start curl");
-        var stdoutTask = process.StandardOutput.ReadToEndAsync();
-        var stderrTask = process.StandardError.ReadToEndAsync();
-        await process.WaitForExitAsync();
-
-        if (process.ExitCode != 0)
-        {
-            throw new InvalidOperationException($"curl exited with code {process.ExitCode}: {await stderrTask}");
-        }
-
-        return await stdoutTask;
+        var proxiedUrl = $"https://api.scraperapi.com/?api_key={ScraperApiKey}&url={Uri.EscapeDataString(url)}";
+        return await client.GetStringAsync(proxiedUrl);
     }
 
     public static async Task<Location?> FetchLocation(string location)

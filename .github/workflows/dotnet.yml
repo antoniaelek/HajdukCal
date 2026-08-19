@@ -26,6 +26,8 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Run
+      env:
+        SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
       run: dotnet run --project HajdukCal.Console/HajdukCal.Console.csproj
     - name: Delete old release asset
       uses: mknejp/delete-release-assets@v1
